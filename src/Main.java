@@ -1,13 +1,48 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-void main() {
-  //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-  // to see how IntelliJ IDEA suggests fixing it.
-  IO.println(String.format("Hello and welcome!"));
 
-  for (int i = 1; i <= 5; i++) {
-    //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-    // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-    IO.println("i = " + i);
-  }
+import java.util.ArrayList;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+
+        List<Item> inventory = new ArrayList<>();
+
+        inventory.add(new Weapon("Sword", 500, 5.0));
+        inventory.add(new Armor("Iron Armor", 800, 15.0));
+        inventory.add(new Potion("Health Potion", 100, 1.0));
+
+        PriceVisitor priceVisitor = new PriceVisitor();
+        WeightVisitor weightVisitor = new WeightVisitor();
+        DescriptionVisitor descriptionVisitor = new DescriptionVisitor();
+
+        System.out.println("=== GAME INVENTORY ===");
+
+        for (Item item : inventory) {
+            System.out.println(item.getClass().getSimpleName());
+        }
+
+        System.out.println("\n=== PRICE CALCULATION ===");
+
+        for (Item item : inventory) {
+            item.accept(priceVisitor);
+        }
+
+        System.out.println("Total Price: "
+                + priceVisitor.getTotalPrice() + " Gold");
+
+        System.out.println("\n=== WEIGHT CALCULATION ===");
+
+        for (Item item : inventory) {
+            item.accept(weightVisitor);
+        }
+
+        System.out.println("Total Weight: "
+                + weightVisitor.getTotalWeight() + " kg");
+
+        System.out.println("\n=== ITEM DESCRIPTIONS ===");
+
+        for (Item item : inventory) {
+            item.accept(descriptionVisitor);
+        }
+    }
 }
